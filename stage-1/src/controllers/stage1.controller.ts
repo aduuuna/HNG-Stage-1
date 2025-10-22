@@ -26,7 +26,7 @@ return {
     sha256_hash: doc.properties.sha256_hash,
     character_frequency_map: doc.properties.character_frequency_map,
   },
-  creates_at: doc.created_at,
+  created_at: doc.created_at,
 };
 }
 
@@ -138,13 +138,13 @@ export async function deleteStringController(req:Request, res:Response) : Promis
 
 export async function filterByNaturalLanguage(req: Request, res:Response): Promise<void> {
   try {
-    const q = req.query;
-    if (!q || typeof q !== 'string') {
+    const {query} = req.query;
+    if (!query || typeof query !== 'string') {
       res.status(400).json({error: "Missing or invalid 'query' parameter"});
       return;
     }
 
-    const {data, interpretedQuery} = await getStringsByNaturalLanguage(q);
+    const {data, interpretedQuery} = await getStringsByNaturalLanguage(query);
 
     res.status(200).json({
       data: data.map(formatAnalyzedString),
