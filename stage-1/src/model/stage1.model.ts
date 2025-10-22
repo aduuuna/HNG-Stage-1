@@ -32,6 +32,16 @@ const AnalyzedStringSchema = new Schema<IAnalyzedString> ({
   },
 });
 
+AnalyzedStringSchema.set('toJSON', {
+  virtuals: true,
+  transform: function(doc, ret:any) {
+    ret.id = ret.properties.sha256_hash;  // Use hash as id
+    delete ret._id;
+    delete ret.__v;
+    return ret;
+  }
+});
+
 export const AnalyzedString = mongoose.model<IAnalyzedString>(
   "AnalyzedString",
   AnalyzedStringSchema
